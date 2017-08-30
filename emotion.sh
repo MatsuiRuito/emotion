@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# ファイルフラグの初期化
+FILE_FLAG=0
+
 # 感情値の初期化
 enjoy_val=0
 happy_val=0
@@ -8,89 +11,103 @@ relief_val=0
 surprise_val=0
 
 usage_exit() {
-  echo "Usage: $0 [-f] filename" 1>&2
+  echo "Usage: $0 [-f filename] hogehoge" 1>&2
   exit 1
 }
 
+# ファイルの存在確認を行う関数
 file_check() {
-  if [ $? == 1 ]; then
+  if [ ! -e $filename ]; then
     echo $filename"が存在しません。"
     exit 1
   fi
 }
 
-while getopts :f OPT
+while getopts f:h OPT
 do
   case $OPT in
     f) FILE_FLAG=1
+       filename=$OPTARG
+      ;;
+    h) usage_exit
       ;;
     \?) usage_exit
       ;;
   esac
 done
 
+# 区切り文字をスペースに設定
+IFS=' '
+
+# ファイルフラグが1の場合はファイルからデータを読み取る
+if [ $FILE_FLAG == 1 ]; then
+  file_check $*
+  file_size=(`wc -c $filename | awk '{print $1}'`)
+  # mecabで分ち書きにしたものを配列に代入
+  word_list=(`mecab -O wakati -b $file_size $filename | tr -d "\n"`)
+else
+  # mecabで分ち書きにしたものを配列に代入
+  word_list=(`echo $1 | mecab -O wakati`)
+fi
+
 # 区切り文字をカンマに設定
 IFS=','
 
 # 辞書の存在チェック、代入
 filename="enjoy.csv"
-enjoy_dic=(`cat $filename 2> /dev/null`)
 file_check $*
+enjoy_dic=(`cat $filename`)
 
 filename="happy.csv"
-happy_dic=(`cat $filename 2> /dev/null`)
 file_check $*
+happy_dic=(`cat $filename`)
 
 filename="like.csv"
-like_dic=(`cat $filename 2> /dev/null`)
 file_check $*
+like_dic=(`cat $filename`)
 
 filename="relief.csv"
-relief_dic=(`cat $filename 2> /dev/null`)
 file_check $*
+relief_dic=(`cat $filename`)
 
 filename="surprise.csv"
-surprise_dic=(`cat $filename 2> /dev/null`)
 file_check $*
-
-# mecabで分ち書きにしたものを配列に代入
-IFS=' '
-word_list=(`echo $1 | mecab -Owakati`)
+surprise_dic=(`cat $filename`)
 
 # 比較処理
 for word in "${word_list[@]}"; do
   # enjoyのカウント
   for enjoy_word in "${enjoy_dic[@]}"; do
     if [ $word == $enjoy_word ]; then
-      (( enjoy_val++ ))
+      ((enjoy_val++))
     fi
   done
 
   # happyのカウント
   for happy_word in "${happy_dic[@]}"; do
     if [ $word == $happy_word ]; then
-      (( happy_val++ ))
+      $((happy_val++))
     fi
   done
 
   # likeのカウント
   for like_word in "${like_dic[@]}"; do
     if [ $word == $like_word ]; then
-      (( like_val++ ))
+      $((like_val++))
     fi
   done
 
   # reliefのカウント
   for relief_word in "${relief_dic[@]}"; do
     if [ $word == $relief_word ]; then
-      (( relief_val++ ))
+      ((relief_val++))
     fi
   done
 
   # surpriseのカウント
   for surprise_word in "${surprise_dic[@]}"; do
     if [ $word == $surprise_word ]; then
-      (( surprise_val++ ))
+      ((surprise_val++))
     fi
   done
 done
