@@ -79,35 +79,45 @@ for word in "${word_list[@]}"; do
   # enjoyのカウント
   for enjoy_word in "${enjoy_dic[@]}"; do
     if [ $word == $enjoy_word ]; then
+      echo $word"="$enjoy_word
       ((enjoy_val++))
+      continue
     fi
   done
 
   # happyのカウント
   for happy_word in "${happy_dic[@]}"; do
     if [ $word == $happy_word ]; then
+      echo $word"="$happy_word
       ((happy_val++))
+      continue
     fi
   done
 
   # likeのカウント
   for like_word in "${like_dic[@]}"; do
     if [ $word == $like_word ]; then
-      $((like_val++))
+      echo $word"="$like_word
+      ((like_val++))
+      continue
     fi
   done
 
   # reliefのカウント
   for relief_word in "${relief_dic[@]}"; do
     if [ $word == $relief_word ]; then
+      echo $word"="$relief_word
       ((relief_val++))
+      continue
     fi
   done
 
   # surpriseのカウント
   for surprise_word in "${surprise_dic[@]}"; do
     if [ $word == $surprise_word ]; then
+      echo $word"="$surprise_word
       ((surprise_val++))
+      continue
     fi
   done
 done
