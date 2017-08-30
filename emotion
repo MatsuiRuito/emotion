@@ -86,7 +86,7 @@ for word in "${word_list[@]}"; do
   # happyのカウント
   for happy_word in "${happy_dic[@]}"; do
     if [ $word == $happy_word ]; then
-      $((happy_val++))
+      ((happy_val++))
     fi
   done
 
