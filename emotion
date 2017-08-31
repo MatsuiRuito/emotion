@@ -54,23 +54,23 @@ fi
 IFS=','
 
 # 辞書の存在チェック、代入
-filename="enjoy.csv"
+filename="/Users/matsui/project/emotion/dictionary/enjoy.csv"
 file_check $*
 enjoy_dic=(`cat $filename`)
 
-filename="happy.csv"
+filename="/Users/matsui/project/emotion/dictionary/happy.csv"
 file_check $*
 happy_dic=(`cat $filename`)
 
-filename="like.csv"
+filename="/Users/matsui/project/emotion/dictionary/like.csv"
 file_check $*
 like_dic=(`cat $filename`)
 
-filename="relief.csv"
+filename="/Users/matsui/project/emotion/dictionary/relief.csv"
 file_check $*
 relief_dic=(`cat $filename`)
 
-filename="surprise.csv"
+filename="/Users/matsui/project/emotion/dictionary/surprise.csv"
 file_check $*
 surprise_dic=(`cat $filename`)
 
@@ -79,7 +79,6 @@ for word in "${word_list[@]}"; do
   # enjoyのカウント
   for enjoy_word in "${enjoy_dic[@]}"; do
     if [ $word == $enjoy_word ]; then
-      echo $word"="$enjoy_word
       ((enjoy_val++))
       continue
     fi
@@ -88,7 +87,6 @@ for word in "${word_list[@]}"; do
   # happyのカウント
   for happy_word in "${happy_dic[@]}"; do
     if [ $word == $happy_word ]; then
-      echo $word"="$happy_word
       ((happy_val++))
       continue
     fi
@@ -97,7 +95,6 @@ for word in "${word_list[@]}"; do
   # likeのカウント
   for like_word in "${like_dic[@]}"; do
     if [ $word == $like_word ]; then
-      echo $word"="$like_word
       ((like_val++))
       continue
     fi
@@ -106,7 +103,6 @@ for word in "${word_list[@]}"; do
   # reliefのカウント
   for relief_word in "${relief_dic[@]}"; do
     if [ $word == $relief_word ]; then
-      echo $word"="$relief_word
       ((relief_val++))
       continue
     fi
@@ -115,15 +111,10 @@ for word in "${word_list[@]}"; do
   # surpriseのカウント
   for surprise_word in "${surprise_dic[@]}"; do
     if [ $word == $surprise_word ]; then
-      echo $word"="$surprise_word
       ((surprise_val++))
       continue
     fi
   done
 done
 
-echo "enjoy:"$enjoy_val
-echo "happy:"$happy_val
-echo "like:"$like_val
-echo "relief:"$relief_val
-echo "surprise:"$surprise_val
+echo "enjoy:$enjoy_val happy:$happy_val like:$like_val relief:$relief_val surprise:$surprise_val"
